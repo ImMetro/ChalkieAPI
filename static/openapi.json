@@ -1,0 +1,403 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Chalkie API - OpenAPI 3.0",
+    "description": "This is the official documentation for the Chalkie API.  You can find out more about\nChalkie at [https://chalkie.app](https://chalkie.app). If you have any queries, please do not hesitate to contact us!"
+  },
+  "servers": [
+    {
+      "url": "https://chalkie.app/api/v1/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Templates",
+      "description": "Everything about our templates",
+      "externalDocs": {
+        "description": "Back home",
+        "url": "http://chalkie.app"
+      }
+    },
+    {
+      "name": "TBA",
+      "description": "tba"
+    }
+  ],
+  "paths": {
+    "/templates/{template_id}/subscribe": {
+      "put": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Increase the subscriber number of a template by 1",
+        "description": "Update the subscriber numbers of an existing template by +1",
+        "operationId": "updateTemplate",
+        "parameters": [
+          {
+            "name": "template_id",
+            "in": "query",
+            "description": "The template lets the api know which template to update",
+            "required": true,
+            "explode": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Template"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Template"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Pet not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Templates"
+        ],
+        "summary": "Decrease the subscriber number of a template by 1",
+        "description": "Decrease template subscriber by 1, require template_id",
+        "operationId": "addPet",
+        "requestBody": {
+          "description": "Decrease the subscriber_no by 1",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Template"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/Template"
+              }
+            },
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Template"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Template"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Template"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "University": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "timestamp",
+            "format": "dd/mm/yyyy"
+          },
+          "location": {
+            "type": "integer"
+          },
+          "logo": {
+            "type": "string",
+            "example": "https://icon.ico/icon.png"
+          },
+          "name": {
+            "type": "string",
+            "example": "John Smith"
+          },
+          "uni_id": {
+            "type": "integer",
+            "example": 1234567
+          },
+          "updated_at": {
+            "type": "timestamp",
+            "format": "dd/mm/yyyy"
+          },
+          "website": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "university"
+        }
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "university": {
+            "type": "DocName[University]"
+          },
+          "name": {
+            "type": "string"
+          },
+          "year": {
+            "type": "string"
+          },
+          "start": {
+            "type": "date"
+          },
+          "end": {
+            "type": "date"
+          }
+        },
+        "xml": {
+          "name": "session"
+        }
+      },
+      "Course": {
+        "type": "object",
+        "properties": {
+          "university": {
+            "type": "DocName[University]",
+            "example": "The Australian National University"
+          },
+          "course_id": {
+            "type": "string",
+            "example": "COMP3500"
+          },
+          "career": {
+            "type": "string",
+            "example": "Computer Science"
+          },
+          "name": {
+            "type": "string",
+            "example": "Software Engineering Project"
+          },
+          "units": {
+            "type": "float",
+            "example": 6
+          },
+          "sessions": {
+            "type": "Array<String>"
+          }
+        },
+        "xml": {
+          "name": "course"
+        }
+      },
+      "SessionCourse": {
+        "type": "object",
+        "properties": {
+          "course": {
+            "type": "DocName[Course]"
+          },
+          "session": {
+            "type": "DocName[Session]"
+          },
+          "overview": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "sessioncourse"
+        }
+      },
+      "Degree": {
+        "type": "object",
+        "properties": {
+          "university": {
+            "type": "DocName[University]"
+          },
+          "created_at": {
+            "type": "timestamp"
+          },
+          "degree_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "uni_id": {
+            "type": "Reference[University: uni_id]"
+          },
+          "updated_at": {
+            "type": "timestamp"
+          },
+          "double_degree": {
+            "type": "boolean"
+          }
+        },
+        "xml": {
+          "name": "degree"
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "auth_id": {
+            "type": "string",
+            "description": "tba"
+          },
+          "chat_ids": {
+            "type": "array",
+            "description": "tba"
+          },
+          "country_name": {
+            "type": "string",
+            "description": "tba"
+          },
+          "course_ids": {
+            "type": "array",
+            "description": "tba"
+          },
+          "created_at": {
+            "type": "timestamp",
+            "description": "tba"
+          },
+          "degree": {
+            "type": "Array[Map]",
+            "description": "tba"
+          },
+          "degrees": {
+            "$ref": "#/components/schemas/StudentDegree"
+          },
+          "email": {
+            "type": "string",
+            "description": "tba"
+          },
+          "fcm_token": {
+            "type": "?",
+            "description": "tba"
+          },
+          "friend_ids": {
+            "type": "array",
+            "description": "tba"
+          },
+          "gpa": {
+            "type": "string",
+            "description": "tba"
+          },
+          "id": {
+            "type": "string",
+            "description": "tba"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "tba"
+          },
+          "is_degree_plan_public": {
+            "type": "boolean",
+            "description": "tba"
+          },
+          "is_double_degree": {
+            "type": "boolean",
+            "description": "tba"
+          },
+          "is_private": {
+            "type": "boolean",
+            "description": "tba"
+          },
+          "is_receive_chalkie_request": {
+            "type": "boolean",
+            "description": "tba"
+          },
+          "is_verified": {
+            "type": "boolean",
+            "description": "tba"
+          },
+          "pending_ids": {
+            "type": "Array",
+            "description": "tba"
+          },
+          "profile_color": {
+            "type": "hex",
+            "description": "tba"
+          },
+          "requested_ids": {
+            "type": "Array",
+            "description": "tba"
+          },
+          "student_type": {
+            "type": "string",
+            "description": "tba"
+          },
+          "university_email": {
+            "type": "string",
+            "description": "tba"
+          },
+          "university_name": {
+            "type": "string",
+            "description": "tba"
+          },
+          "updated_at": {
+            "type": "timestamp",
+            "description": "tba"
+          },
+          "wam": {
+            "type": "string",
+            "description": "the WAM of the user, should move to degree info data"
+          }
+        },
+        "xml": {
+          "name": "user"
+        }
+      },
+      "StudentDegree": {
+        "type": "object",
+        "properties": {
+          "degree": {
+            "type": "DocName[Degree]"
+          },
+          "user_id": {
+            "type": "DocName[User]"
+          },
+          "name": {
+            "type": "string"
+          },
+          "wam": {
+            "type": "string"
+          },
+          "gpa": {
+            "type": "string"
+          },
+          "courses": {
+            "type": "Collection[StudentCourse]"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "xml": {
+          "name": "studentdegree"
+        }
+      }
+    }
+  }
+}
